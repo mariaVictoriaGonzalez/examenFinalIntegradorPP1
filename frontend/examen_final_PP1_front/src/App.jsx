@@ -1,18 +1,15 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import Navbar from './components/Navbar'
+import Home from './components/Home'
+import Footer from './components/Footer'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-white">
-        ¡Tailwind está funcionando!
-      </h1>
+    <div className="min-h-screen flex flex-col bg-gray-900 text-zinc-100">
+      <Navbar />
+      <Home />
+      <Footer />
     </div>
     </>
   )
