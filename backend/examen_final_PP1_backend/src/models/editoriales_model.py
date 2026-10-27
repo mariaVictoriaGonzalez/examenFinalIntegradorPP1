@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Relationship, Field
 from typing import Annotated
-from .juegos_model import Juego
+
 
 Nombre = Annotated[str, Field(min_length=2, max_length=75)]
 

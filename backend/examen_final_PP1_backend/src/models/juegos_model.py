@@ -23,7 +23,7 @@ class JuegoBase(SQLModel):
     descripcion: Descripcion
     jugadores_min: Jugadores
     jugadores_max: Jugadores
-    activo = Activo
+    activo: Activo
     editorial_id: int | None = Field(default=None, foreign_key="editorial.id")
     categoria_id: int | None = Field(default=None, foreign_key="categoria.id")
 

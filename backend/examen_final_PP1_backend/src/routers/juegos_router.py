@@ -3,7 +3,7 @@ from fastapi_pagination import Page, paginate
 from sqlmodel import Session, select
 from typing import Annotated
 
-from src.database import get_db
+from database import get_db
 from models.anidados import JuegoNested
 from models.juegos_model import Juego, JuegoBase, JuegoPublic
 
@@ -95,7 +95,7 @@ async def editar_juego(
 
 @juegos_routers.delete(
     "/{id}",
-    respones=NOT_FOUND,
+    responses=NOT_FOUND,
     response_model=list[JuegoPublic],
 )
 async def borrar_juego(
