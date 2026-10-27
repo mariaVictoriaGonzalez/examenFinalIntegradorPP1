@@ -2,14 +2,23 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 
-#ROUTERS from routers.NOMBRE import ...
+from src.models.juegos_model import juegos
+from src.models.categorias_model import categoria
+from src.models.editoriales_model import editorial
+from src.routers.juegos_router import juegos_routers
+from src.routers.categorias_router import categoria_routers
+from src.routers.editoriales_router import editorial_routers
+
 
 
 app = FastAPI()
 
-app.title = "APP EFI" #nombre temporal
+app.title = "La Mazmorra"
 
-#los routers - pathoperation app.include_router(NOMBRE_routers, tags["NOMBRE"], prefix="/nombre")
+app.include_router(juegos_routers, tags=["Juegos"], prefix="/juegos")
+app.include_router(categoria_routers, tags=["Categoria"], prefix="/categoria")
+app.include_router(editorial_routers, tags=["Editorial"], prefix="/editorial")
+
 
 add_pagination(app)
 
