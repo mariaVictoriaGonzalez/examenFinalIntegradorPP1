@@ -20,11 +20,11 @@ NOT_FOUND = {
         },
     },
 }
-
-Id: Annotated[int, Path(gt=0, description="ID de la categoría >0")]
+#TypeAlias: para poder reutilizar Db en los endpoints y no rescribir Session = Depends(get_db)
+Id = Annotated[int, Path(gt=0, description="ID de la categoría >0")]
 Db: TypeAlias = Annotated[Session, Depends(get_db)]
 
-#--------------------- GET ALL -----------------
+#--------------------- GET ALL ----------------------------------
 
 @categoria_routers.get(
     "/",
@@ -34,7 +34,7 @@ async def get_categoria(db: Db):
     categorias = db.exec(select(Categoria)).all()
     return paginate(categorias)
 
-#--------------------- POST ---------------------
+#--------------------- POST -------------------------------------
 
 @categoria_routers.post(
     "/categoria",
@@ -50,7 +50,8 @@ async def crear_categoria(
     db.refresh(nueva_categoria)
     return nueva_categoria
 
-#-------------------- PUT -----------------------
+#-------------------- PUT --------------------------------------
+
 @categoria_routers.put(
     "/{id}",
     responses=NOT_FOUND,
@@ -70,7 +71,8 @@ async def editar_categoria(
         return categoria_obtenida
     raise HTTPException(status_code=404, detail="Categoría no encontrada")
 
-#---------------------- DELETE -----------------------
+#---------------------- DELETE ------------------------------------
+
 @categoria_routers.delete(
     "/{id}",
     responses=NOT_FOUND,

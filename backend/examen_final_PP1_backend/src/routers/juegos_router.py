@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Path, Query
 from fastapi_pagination import Page, paginate
 from sqlmodel import Session, select
-from typing import Annotated
+from typing import Annotated, TypeAlias
 
 from database import get_db
 from models.anidados import JuegoNested
@@ -21,21 +21,33 @@ NOT_FOUND = {
         },
     },
 }
-
+#TypeAlias: para poder reutilizar Db en los endpoints y no rescribir Session = Depends(get_db)
 Id = Annotated[int, Path(gt=0, description="ID del juego > 0")]
+Db: TypeAlias = Annotated[Session, Depends(get_db)]
 
-#---------------------------- GET ALL JUEGOS ---------------------
+#---------------------------- GET ALL JUEGOS -------------------------------
 
 @juegos_routers.get(
     "/", response_model=Page[JuegoPublic]
 )
-async def get_juegos(db: Session = Depends(get_db)):
+async def get_juegos(db: Db):
     juegos = db.exec(select(Juego)).all()
     return paginate(
         juegos
     )
 
-#---------------------------- GET BY ID ---------------------------
+#---------------------------- GET ALL JUEGOS ACTIVOS -----------------------
+
+@juegos_routers.get(
+    "/activos", response_model=Page[JuegoPublic]
+)
+async def get_juegos(db: Db):
+    juegos = db.exec(select(Juego)).where(Juego.activo == True)
+    return paginate(
+        juegos
+    )
+
+#---------------------------- GET BY ID -----------------------------------
 
 @juegos_routers.get(
     "/{id}",
@@ -43,18 +55,18 @@ async def get_juegos(db: Session = Depends(get_db)):
     response_model=JuegoNested,
 )
 async def get_juegos_by_id(
-    id: Id, db: Session = Depends(get_db)
+    id: Id, db: Db
 ):
     juego_obtenido = db.get(Juego, id)
     if juego_obtenido is not None:
         return juego_obtenido
     raise HTTPException(status_code=404, detail="Juego no encontrado")
 
-#---------------------------- POST --------------------------------
+#---------------------------- POST -----------------------------------
 
 @juegos_routers.post("/", response_model=JuegoNested)
 async def crear_juego(
-    juego_nuevo: JuegoBase, db: Session = Depends(get_db)
+    juego_nuevo: JuegoBase, db: Db
 ):
     juego_db = Juego.model_validate(juego_nuevo)
     db.add(juego_db)
@@ -62,7 +74,7 @@ async def crear_juego(
     db.refresh(juego_db)
     return juego_db
 
-#---------------------------- PUT ----------------------------------
+#---------------------------- PUT -------------------------------------
 
 @juegos_routers.put(
     "/{id}", responses=NOT_FOUND, response_model=JuegoPublic
@@ -70,7 +82,7 @@ async def crear_juego(
 async def editar_juego(
     id: Id,
     juego_editar: JuegoBase,
-    db: Session = Depends(get_db),
+    db: Db,
 ):
     juego_obtenido = db.get(Juego, id)
     if juego_obtenido is not None:
@@ -91,7 +103,7 @@ async def editar_juego(
 
     raise HTTPException(status_code=404, detail="Juego no encontrado")
 
-#----------------------------- DELETE ---------------------------------
+#----------------------------- DELETE ------------------------------------
 
 @juegos_routers.delete(
     "/{id}",
@@ -100,9 +112,9 @@ async def editar_juego(
 )
 async def borrar_juego(
     id: Id,
-    db: Annotated[Session, Depends(get_db)],
+    db: Db,
     logico: Annotated[bool, Query(description="Mantener registro?")] = True,
-) -> JuegoPublic:
+):
     juego_obtenido = db.get(Juego, id)
     if juego_obtenido is not None:
         if logico:

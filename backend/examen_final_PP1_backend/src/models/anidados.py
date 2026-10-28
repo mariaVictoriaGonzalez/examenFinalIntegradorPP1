@@ -1,13 +1,13 @@
-from .categorias_model import CategoriaPublic, Categoria
-from .editoriales_model import EditorialPublic, Editorial
-from .juegos_model import JuegoPublic, Juego
+from .categorias_model import CategoriaPublic
+from .editoriales_model import EditorialPublic
+from .juegos_model import JuegoPublic
 
 class JuegoNested(JuegoPublic):
-    categoria: Categoria | None = None
-    editorial: Editorial | None = None
+    categoria: CategoriaPublic | None = None
+    editorial: EditorialPublic | None = None
 
 class EditorialNested(EditorialPublic):
-    juegos: list[Juego] = []
+    juegos: list[JuegoPublic] = []
 
 class CategoriaNested(CategoriaPublic):
-    juegos: list[Juego] = []
+    juegos: list[JuegoPublic] = []
