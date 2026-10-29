@@ -35,6 +35,21 @@ async def get_Editorial(db: Db):
     Editoriales = db.exec(select(Editorial)).all()
     return paginate(Editoriales)
 
+#---------------------------- GET BY ID -----------------------------------
+
+@editorial_routers.get(
+    "/{id}",
+    responses=NOT_FOUND,
+    response_model=EditorialNested,
+)
+async def get_editorial_by_id(
+    id: Id, db: Db
+):
+    editorial_obtenida = db.get(Editorial, id)
+    if editorial_obtenida is not None:
+        return editorial_obtenida
+    raise HTTPException(status_code=404, detail="Editorial no encontrada")
+
 #--------------------- POST ---------------------------------------
 
 @editorial_routers.post(
@@ -45,7 +60,7 @@ async def crear_editorial(
     editorial: EditorialBase,
     db: Db
 ):
-    nueva_editorial = editorial.model_validate(Editorial)
+    nueva_editorial = Editorial.model_validate(editorial)
     db.add(nueva_editorial)
     db.commit()
     db.refresh(nueva_editorial)
@@ -65,7 +80,8 @@ async def editar_editorial(
     editorial_obtenida = db.get(Editorial, id)
     if editorial_obtenida is not None:
         editorial_obtenida.nombre = editorial_editar.nombre
-        editorial_obtenida.descripcion = editorial_editar.descripcion
+        editorial_obtenida.pais_origen = editorial_editar.pais_origen
+        editorial_obtenida.activo = editorial_editar.activo
         db.commit()
         db.refresh(editorial_obtenida)
         return editorial_obtenida
@@ -86,6 +102,7 @@ async def borrar_editorial(
     if editorial_obtenida is not None:
         if logico:
             editorial_obtenida.activo = False
+            db.commit()
         else:
             db.delete(editorial_obtenida)
             db.commit()

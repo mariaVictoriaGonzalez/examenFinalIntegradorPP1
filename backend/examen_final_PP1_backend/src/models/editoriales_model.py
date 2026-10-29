@@ -3,11 +3,13 @@ from typing import Annotated, List
 
 
 
-Nombre = Annotated[str, Field(min_length=2, max_length=75)]
+Nombre = Annotated[str, Field(unique=True, min_length=2, max_length=75)]
+Activo = Annotated[bool, Field(default=True)]
 
 class EditorialBase(SQLModel):
     nombre: Nombre
-    pais_origen: Nombre
+    pais_origen: str | None
+    activo: Activo
     
 
 class Editorial(EditorialBase, table=True):
