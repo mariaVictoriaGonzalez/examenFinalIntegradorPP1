@@ -91,3 +91,4 @@ El proyecto está dividido en dos partes principales: la carpeta de `backend` y 
 
 * **Backend:** Python, FastAPI, SQLModel (SQLAlchemy + Pydantic), SQLite como motor de base de datos local y Alembic para el control de migraciones.
 * **Frontend:** Node.js, JavaScript/TypeScript y empaquetadores de npm.
+
