@@ -1,11 +1,14 @@
 import Navbar from './components/Navbar'
-import Home from './components/Home'
+import Home from './pages/Home'
 import Footer from './components/Footer'
-import Products from './pages/products'
 import JuegosDeMesa from './pages/juegosDeMesa'
 import JuegosDeRol from './pages/juegosDeRol'
 import Accesorios from './pages/accesorios'
+import ProductDetail from './pages/ProductsDetail'
+import ProductsEditorial from './components/ProductEditorial'
+import ProductsDescription from './components/ProductDescription'
 import { Routes, Route } from 'react-router-dom'
+
 
 function App() {
 
@@ -19,6 +22,13 @@ function App() {
         <Route path='/juegosDeMesa' element= {<JuegosDeMesa />} />
         <Route path='/juegosDeRol' element= {<JuegosDeRol />} />
         <Route path='/accesorios' element= {<Accesorios />} />
+        <Route path='/juegos/:id' element={<ProductDetail />}>
+
+              <Route index element={<ProductsDescription />} />
+
+              <Route path='editorial' element={<ProductsEditorial />} />
+
+            </Route>
       </Routes>
 
       <Footer />
