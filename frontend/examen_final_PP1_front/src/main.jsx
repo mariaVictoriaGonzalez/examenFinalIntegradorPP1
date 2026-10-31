@@ -2,12 +2,16 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import {BrouserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
+import { FavoritosProvider } from './context/FavoritosContext' 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrouserRouter>
+    <BrowserRouter>
+      <FavoritosProvider>
         <App />
-    </BrouserRouter>
+      </FavoritosProvider>
+    </BrowserRouter>
+
   </StrictMode>,
 )
