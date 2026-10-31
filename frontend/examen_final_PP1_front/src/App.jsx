@@ -8,25 +8,24 @@ import Accesorios from './pages/accesorios'
 import Favoritos from './pages/favoritos'
 import { Routes, Route } from 'react-router-dom'
 
-
 function App() {
   const [darkMode, setDarkMode] = useState(true)
 
   return (
-    <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-gray-900 text-zinc-100' : 'bg-white text-slate-900'}`}>
+    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${
+      darkMode ? 'bg-gray-900 text-zinc-100' : 'bg-stone-200/70 text-slate-800'
+    }`}>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/juegosDeMesa' element={<JuegosDeMesa />} />
-        <Route path='/juegosDeRol' element={<JuegosDeRol />} />
-        <Route path='/accesorios' element={<Accesorios />} />
-        <Route path='/favoritos' element={<Favoritos />} />
+        <Route path='/' element={<Home darkMode={darkMode} />} />
+        <Route path='/juegosDeMesa' element={<JuegosDeMesa darkMode={darkMode}  />} />
+        <Route path='/juegosDeRol' element={<JuegosDeRol darkMode={darkMode}  />} />
+        <Route path='/accesorios' element={<Accesorios darkMode={darkMode}  />} />
+        <Route path='/favoritos' element={<Favoritos darkMode={darkMode}  />} />
       </Routes>
 
-    
-      <Footer />
-
+      <Footer darkMode={darkMode} />
     </div>
   )
 }
