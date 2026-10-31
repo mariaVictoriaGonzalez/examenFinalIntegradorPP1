@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import Navbar from './components/Navbar'
-import Home from './components/Home'
+import Home from './pages/Home'
 import Footer from './components/Footer'
-import Products from './pages/products'
 import JuegosDeMesa from './pages/juegosDeMesa'
 import JuegosDeRol from './pages/juegosDeRol'
 import Accesorios from './pages/accesorios'
@@ -26,7 +25,7 @@ function App() {
         <Route path='/favoritos' element={<Favoritos />} />
       </Routes>
 
-     
+    
       <Footer />
 
     </div>
