@@ -42,7 +42,7 @@ async def get_juegos(db: Db):
     "/activos", response_model=Page[JuegoPublic]
 )
 async def get_juegos(db: Db):
-    juegos = db.exec(select(Juego)).where(Juego.activo == True)
+    juegos = db.exec(select(Juego).where(Juego.activo == True)).all()
     return paginate(
         juegos
     )
@@ -118,7 +118,8 @@ async def borrar_juego(
     juego_obtenido = db.get(Juego, id)
     if juego_obtenido is not None:
         if logico:
-            juego_obtenido.atcivo = False
+            juego_obtenido.activo = False
+            db.commit()
         else:
             db.delete(juego_obtenido)
             db.commit()
