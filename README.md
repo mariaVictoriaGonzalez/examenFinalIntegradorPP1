@@ -64,7 +64,6 @@ El proyecto está dividido en dos partes principales: la carpeta de `backend` y 
    ```bash
    cd frontend
    ```
-   *(Nota: Asegúrate de reemplazar `frontend` por el nombre exacto de la carpeta si es diferente, por ejemplo `cd frontend/tu_carpeta_de_react`)*
 
 2. **Instalar los módulos de Node:**
    Descarga todas las librerías necesarias del cliente ejecutando:
@@ -77,18 +76,13 @@ El proyecto está dividido en dos partes principales: la carpeta de `backend` y 
    ```bash
    npm run dev
    ```
-   *Si el proyecto utiliza la configuración tradicional de Node, también puedes probar con:*
-   ```bash
-   npm start
-   ```
 
 4. **Acceso:**
-   La terminal te indicará la dirección local asignada (usualmente [http://localhost:5173](http://localhost:5173) si usas Vite o [http://localhost:3000](http://localhost:3000) si usas React tradicional).
-
+   La terminal te indicará la dirección local asignada  (http://localhost:5173](http://localhost:5173) ya que se realizo con Vite.
 ---
 
 ## 🧰 Tecnologías Utilizadas
 
 * **Backend:** Python, FastAPI, SQLModel (SQLAlchemy + Pydantic), SQLite como motor de base de datos local y Alembic para el control de migraciones.
-* **Frontend:** Node.js, JavaScript/TypeScript y empaquetadores de npm.
+* **Frontend:** Node.js, JavaScript, Vite y empaquetadores de npm.
 
