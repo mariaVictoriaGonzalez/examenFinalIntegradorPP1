@@ -9,3 +9,6 @@ dependencies = [
     "sqlalchemy>=2.1.6",
     "sqlmodel>=0.0.48",
 ]
+
+[tool.fastapi]
+entrypoint = "src.main:app"
