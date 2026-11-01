@@ -34,6 +34,21 @@ async def get_categoria(db: Db):
     categorias = db.exec(select(Categoria)).all()
     return paginate(categorias)
 
+#---------------------------- GET BY ID -----------------------------------
+
+@categoria_routers.get(
+    "/{id}",
+    responses=NOT_FOUND,
+    response_model=CategoriaNested,
+)
+async def get_categoria_by_id(
+    id: Id, db: Db
+):
+    categoria_obtenida = db.get(Categoria, id)
+    if categoria_obtenida is not None:
+        return categoria_obtenida
+    raise HTTPException(status_code=404, detail="Categoría no encontrada")
+
 #--------------------- POST -------------------------------------
 
 @categoria_routers.post(
@@ -65,7 +80,9 @@ async def editar_categoria(
     categoria_obtenida = db.get(Categoria, id)
     if categoria_obtenida is not None:
         categoria_obtenida.nombre = categoria_editar.nombre
+        categoria_obtenida.tipo_juego = categoria_editar.tipo_juego
         categoria_obtenida.descripcion = categoria_editar.descripcion
+        categoria_obtenida.activo = categoria_editar.activo
         db.commit()
         db.refresh(categoria_obtenida)
         return categoria_obtenida
@@ -87,6 +104,7 @@ async def borrar_categoria(
     if categoria_obtenida is not None:
         if logico:
             categoria_obtenida.activo = False
+            db.commit()
         else:
             db.delete(categoria_obtenida)
             db.commit()
