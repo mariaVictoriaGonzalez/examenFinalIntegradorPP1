@@ -7,6 +7,9 @@ import JuegosDeRol from './pages/juegosDeRol'
 import Accesorios from './pages/accesorios'
 import Favoritos from './pages/favoritos'
 import { Routes, Route } from 'react-router-dom'
+import ProductDetail from "./pages/ProductsDetail"
+import ProductsDescription from "./components/ProductDescription"
+import ProductsEditorial from "./components/ProductEditorial"
 
 function App() {
   const [darkMode, setDarkMode] = useState(true)
@@ -23,6 +26,12 @@ function App() {
         <Route path='/juegosDeRol' element={<JuegosDeRol darkMode={darkMode}  />} />
         <Route path='/accesorios' element={<Accesorios darkMode={darkMode}  />} />
         <Route path='/favoritos' element={<Favoritos darkMode={darkMode}  />} />
+        <Route path='/juegos/:id' element={<ProductDetail darkMode={darkMode}/>}>
+          <Route index element={<ProductsDescription darkMode={darkMode}/>} />
+
+              <Route path='editorial' element={<ProductsEditorial darkMode={darkMode}/>} />
+              
+        </Route>
       </Routes>
 
       <Footer darkMode={darkMode} />
