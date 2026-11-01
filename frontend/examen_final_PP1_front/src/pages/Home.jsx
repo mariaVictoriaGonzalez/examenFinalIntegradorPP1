@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import Formulario from "./formulario"
 
 const MOCK_JUEGOS = [
     {
@@ -269,6 +270,10 @@ export default function Home({ darkMode }) {
                         </div>
                     ))}
                 </div>
+            </section>
+            {/* FORMULARIO */}
+            <section id="contacto" className="max-w-7xl mx-auto px-6 pt-16 flex justify-center">
+                <Formulario darkMode={darkMode} />
             </section>
         </main>
     )
