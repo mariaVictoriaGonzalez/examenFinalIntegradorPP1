@@ -2,9 +2,9 @@ from logging.config import fileConfig
 from sqlmodel import SQLModel
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from src.models.juegos_model import Juego
-from src.models.editoriales_model import Editorial
-from src.models.categorias_model import Categoria
+from backend.examen_final_PP1_backend.src.app.models.juegos_model import Juego
+from backend.examen_final_PP1_backend.src.app.models.editoriales_model import Editorial
+from backend.examen_final_PP1_backend.src.app.models.categorias_model import Categoria
 
 from alembic import context
 

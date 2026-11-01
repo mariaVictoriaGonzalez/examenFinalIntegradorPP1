@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 
-from routers.juegos_router import juegos_routers
-from routers.categorias_router import categoria_routers
-from routers.editoriales_router import editorial_routers
+from app.routers.juegos_router import juegos_routers
+from app.routers.categorias_router import categoria_routers
+from app.routers.editoriales_router import editorial_routers
 
 
 
