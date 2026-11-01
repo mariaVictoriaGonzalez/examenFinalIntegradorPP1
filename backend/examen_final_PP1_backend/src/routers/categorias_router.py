@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Path, Query, HTTPException
-from fastapi_pagination import Page, paginate
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlmodel import paginate
 from typing import Annotated, TypeAlias
 from sqlmodel import Session, select
 from database import get_db
@@ -23,16 +24,22 @@ NOT_FOUND = {
 #TypeAlias: para poder reutilizar Db en los endpoints y no rescribir Session = Depends(get_db)
 Id = Annotated[int, Path(gt=0, description="ID de la categoría >0")]
 Db: TypeAlias = Annotated[Session, Depends(get_db)]
+Activos: TypeAlias = Annotated[bool, Query(description= "Filtrar solo activos?")]
 
 #--------------------- GET ALL ----------------------------------
-
+#Con filtrado de activos o no
 @categoria_routers.get(
     "/",
     response_model=Page[CategoriaPublic]
 )
-async def get_categoria(db: Db):
-    categorias = db.exec(select(Categoria)).all()
-    return paginate(categorias)
+async def get_categoria(
+    db: Db,
+    solo_activas: Activos = True
+):
+    consulta_categorias = select(Categoria)
+    if solo_activas:
+        consulta_categorias = consulta_categorias.where(Categoria.activo == True)
+    return paginate(db, consulta_categorias)
 
 #---------------------------- GET BY ID -----------------------------------
 

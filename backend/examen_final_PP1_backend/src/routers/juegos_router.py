@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Path, Query
-from fastapi_pagination import Page, paginate
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlmodel import Session, select
 from typing import Annotated, TypeAlias
 
@@ -24,28 +25,21 @@ NOT_FOUND = {
 #TypeAlias: para poder reutilizar Db en los endpoints y no rescribir Session = Depends(get_db)
 Id = Annotated[int, Path(gt=0, description="ID del juego > 0")]
 Db: TypeAlias = Annotated[Session, Depends(get_db)]
+Activos: TypeAlias = Annotated[bool, Query(description= "Filtrar solo activos?")]
 
 #---------------------------- GET ALL JUEGOS -------------------------------
-
+#Con filtrado de activos o no
 @juegos_routers.get(
     "/", response_model=Page[JuegoPublic]
 )
-async def get_juegos(db: Db):
-    juegos = db.exec(select(Juego)).all()
-    return paginate(
-        juegos
-    )
-
-#---------------------------- GET ALL JUEGOS ACTIVOS -----------------------
-
-@juegos_routers.get(
-    "/activos", response_model=Page[JuegoPublic]
-)
-async def get_juegos(db: Db):
-    juegos = db.exec(select(Juego).where(Juego.activo == True)).all()
-    return paginate(
-        juegos
-    )
+async def get_juegos(
+    db: Db,
+    solo_activos: Activos = True  #Default True
+):
+    consulta_juegos = select(Juego)
+    if solo_activos:
+        consulta_juegos = consulta_juegos.where(Juego.activo == True)
+    return paginate(db, consulta_juegos)
 
 #---------------------------- GET BY ID -----------------------------------
 

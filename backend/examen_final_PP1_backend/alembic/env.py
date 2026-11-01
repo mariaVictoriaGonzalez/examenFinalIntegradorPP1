@@ -1,11 +1,20 @@
+import sys
 from logging.config import fileConfig
-from sqlmodel import SQLModel
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-from src.models.juegos_model import Juego
-from src.models.editoriales_model import Editorial
-from src.models.categorias_model import Categoria
 
+from sqlalchemy import engine_from_config, pool
+from sqlmodel import SQLModel
+from pathlib import Path
+
+
+ROOT_DIR = Path (__file__).resolve().parent.parent
+SRC_DIR = ROOT_DIR / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+
+from models.juegos_model import Juego
+from models.editoriales_model import Editorial
+from models.categorias_model import Categoria
 from alembic import context
 
 # this is the Alembic Config object, which provides
