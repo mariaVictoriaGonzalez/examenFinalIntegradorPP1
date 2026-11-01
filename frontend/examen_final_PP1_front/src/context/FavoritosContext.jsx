@@ -16,7 +16,7 @@ export function FavoritosProvider({ children }) {
     }
 
     return (
-        <FavoritosContext.Provider value={{ favoritos, toggleFavorito }}>
+        <FavoritosContext.Provider value={{ favoritos, toggleFavorito, setFavoritos }}>
             {children}
         </FavoritosContext.Provider>
     )

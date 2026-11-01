@@ -69,9 +69,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
                         <span>({favoritos?.length || 0})</span>
                     </NavLink>
 
-                    <button className="bg-linear-to-r from-teal-600 to-emerald-600 dark:from-teal-500 dark:to-emerald-500 hover:opacity-90 active:scale-95 text-white dark:text-slate-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition-all duration-200">
+                    <NavLink to="/carrito" className="bg-linear-to-r from-teal-600 to-emerald-600 dark:from-teal-500 dark:to-emerald-500 hover:opacity-90 active:scale-95 text-white dark:text-slate-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition-all duration-200">
                         🛒 Carrito
-                    </button>
+                    </NavLink>
                 </div>
             </div>
         </nav>
