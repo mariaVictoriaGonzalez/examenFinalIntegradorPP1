@@ -1,90 +1,78 @@
-import { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import { CarritoContext } from '../context/CarritoContext'
+import { useContext } from "react"
+import { CarritoContext } from "../context/CarritoContext"
+import { Link } from "react-router-dom"
 
-export default function Carrito() {
-  const { carrito, quitarDelCarrito, vaciarCarrito, total } = useContext(CarritoContext)
+export default function Carrito({ darkMode }) {
+    const { carrito, actualizarCantidad, eliminarDelCarrito, vaciarCarrito, totalPrecio } = useContext(CarritoContext)
 
-  return (
-    <main className="flex-1 max-w-6xl w-full mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">
-          Mi <span className="text-emerald-500">Carrito</span>
-        </h1>
-      </div>
+    if (carrito.length === 0) {
+        return (
+            <div className="flex-1 flex flex-col items-center justify-center py-20 px-4">
+                <h1 className="text-2xl font-bold mb-2">Tu carrito está vacío 🛒</h1>
+                <Link to="/" className="text-emerald-500 hover:underline text-sm font-semibold">
+                    Explorar productos
+                </Link>
+            </div>
+        )
+    }
 
-      {!carrito || carrito.length === 0 ? (
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center max-w-sm mx-auto">
-          <p className="text-3xl mb-2">🛒</p>
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
-            Tu carrito está vacío
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 text-sm mb-5">
-            Añadí juegos desde el catálogo para realizar tu pedido.
-          </p>
-          <Link
-            to="/"
-            className="inline-block bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold px-5 py-2 rounded-lg text-sm transition-colors"
-          >
-            Ir al Catálogo
-          </Link>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden divide-y divide-slate-200 dark:divide-slate-700">
-            {carrito.map((juego) => (
-              <div key={juego.id} className="p-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={juego.imagen || 'https://via.placeholder.com/100'}
-                    alt={juego.nombre}
-                    className="w-16 h-16 object-cover rounded-lg"
-                  />
-                  <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white text-base">
-                      {juego.nombre}
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-xs">
-                      Cantidad: {juego.cantidad}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <span className="text-emerald-500 font-bold text-base">
-                    ${juego.precio * juego.cantidad}
-                  </span>
-                  <button
-                    onClick={() => quitarDelCarrito(juego.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
-                  >
-                    Quitar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <span className="text-slate-600 dark:text-slate-400 text-xs">Total a pagar:</span>
-              <p className="text-2xl font-bold text-emerald-500">${total}</p>
+    return (
+        <main className="flex-1 max-w-4xl mx-auto px-6 pt-10 pb-16 w-full">
+            <div className="flex justify-between items-center mb-6 border-b pb-4 border-stone-300 dark:border-zinc-800">
+                <h1 className="text-3xl font-black">Carrito de Compras</h1>
+                <button 
+                    onClick={vaciarCarrito}
+                    className="text-xs font-bold text-red-500 hover:underline"
+                >
+                    Vaciar Carrito
+                </button>
             </div>
 
-            <div className="flex gap-3 w-full sm:w-auto">
-              <button
-                onClick={vaciarCarrito}
-                className="flex-1 sm:flex-none border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
-              >
-                Vaciar
-              </button>
-              <button className="flex-1 sm:flex-none bg-emerald-500 hover:bg-emerald-400 text-slate-900 text-xs font-bold px-5 py-2 rounded-lg transition-colors">
-                Finalizar Compra
-              </button>
+            <div className="space-y-4">
+                {carrito.map((item) => (
+                    <div 
+                        key={item.id}
+                        className={`p-4 rounded-xl border flex items-center justify-between gap-4 ${
+                            darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-stone-100 border-stone-300'
+                        }`}
+                    >
+                        <div className="flex items-center gap-4">
+                            <img src={item.thumbnail} alt={item.nombre} className="w-16 h-16 object-cover rounded-lg bg-zinc-950" />
+                            <div>
+                                <h3 className="font-bold">{item.nombre}</h3>
+                                <span className="text-emerald-500 font-extrabold">${item.precio}</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <button 
+                                onClick={() => actualizarCantidad(item.id, -1)}
+                                className="px-2.5 py-1 bg-stone-300 dark:bg-zinc-800 rounded font-bold"
+                            >
+                                -
+                            </button>
+                            <span className="font-bold">{item.cantidad}</span>
+                            <button 
+                                onClick={() => actualizarCantidad(item.id, 1)}
+                                className="px-2.5 py-1 bg-stone-300 dark:bg-zinc-800 rounded font-bold"
+                            >
+                                +
+                            </button>
+                            <button 
+                                onClick={() => eliminarDelCarrito(item.id)}
+                                className="ml-4 text-red-500 hover:text-red-700 text-sm font-bold"
+                            >
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
-          </div>
-        </div>
-      )}
-    </main>
-  )
+
+            <div className="mt-8 pt-6 border-t border-stone-300 dark:border-zinc-800 flex justify-between items-center">
+                <span className="text-xl font-bold">Total:</span>
+                <span className="text-2xl font-black text-emerald-500">${totalPrecio.toFixed(2)}</span>
+            </div>
+        </main>
+    )
 }

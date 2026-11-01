@@ -34,9 +34,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
                 {/* Nav Links */}
                 <ul className="hidden md:flex items-center gap-2">
                     <li><NavLink to="/" className={linkStyle}>Inicio</NavLink></li>
-                    <li><NavLink to="/juegosDeMesa" className={linkStyle}>Juegos de mesa</NavLink></li>
-                    <li><NavLink to="/juegosDeRol" className={linkStyle}>Juegos de rol</NavLink></li>
-                    <li><NavLink to="/accesorios" className={linkStyle}>Accesorios</NavLink></li>
+                    <li><NavLink to="/juegosFamiliares" className={linkStyle}>Juegos Familiares</NavLink></li>
+                    <li><NavLink to="/eurogames" className={linkStyle}>Eurogames</NavLink></li>
+                    <li><NavLink to="/cooperativos" className={linkStyle}>Cooperativos</NavLink></li>
                 </ul>
 
                 {/* Acciones */}
@@ -69,9 +69,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
                         <span>({favoritos?.length || 0})</span>
                     </NavLink>
 
-                    <button className="bg-linear-to-r from-teal-600 to-emerald-600 dark:from-teal-500 dark:to-emerald-500 hover:opacity-90 active:scale-95 text-white dark:text-slate-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition-all duration-200">
+                    <NavLink to="/carrito" className="bg-linear-to-r from-teal-600 to-emerald-600 dark:from-teal-500 dark:to-emerald-500 hover:opacity-90 active:scale-95 text-white dark:text-slate-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition-all duration-200">
                         🛒 Carrito
-                    </button>
+                    </NavLink>
                 </div>
             </div>
         </nav>
