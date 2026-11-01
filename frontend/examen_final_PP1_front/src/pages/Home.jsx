@@ -1,134 +1,33 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-const MOCK_JUEGOS = [
-    {
-        id: 1,
-        nombre: "Catan",
-        stock: 15,
-        precio: 45.99,
-        edad_minima: 10,
-        thumbnail: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Un juego de estrategia donde los jugadores intentan ser la fuerza dominante en la isla de Catan construyendo asentamientos, ciudades y caminos.",
-        jugadores_min: 3,
-        jugadores_max: 4,
-        activo: true,
-        editorial_id: 1,
-        categoria_id: 1,
-    },
-    {
-        id: 2,
-        nombre: "Carcassonne",
-        stock: 20,
-        precio: 35.50,
-        edad_minima: 7,
-        thumbnail: "https://images.unsplash.com/photo-1606503153255-59d8b8b82176?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Juego de colocación de fichas donde los jugadores construyen el paisaje alrededor de la fortaleza medieval de Carcassonne.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: true,
-        editorial_id: 2,
-        categoria_id: 1,
-    },
-    {
-        id: 3,
-        nombre: "Dixit",
-        stock: 8,
-        precio: 32.00,
-        edad_minima: 8,
-        thumbnail: "https://images.unsplash.com/photo-1563941433-b6a094653ed2?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Un juego ilustrado de deducción creativa donde la imaginación te abre las puertas a historias sorprendentes.",
-        jugadores_min: 3,
-        jugadores_max: 6,
-        activo: true,
-        editorial_id: 3,
-        categoria_id: 2,
-    },
-    {
-        id: 4,
-        nombre: "Virus!",
-        stock: 30,
-        precio: 15.00,
-        edad_minima: 8,
-        thumbnail: "https://images.unsplash.com/photo-1541199249251-f713e6145474?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Juego de cartas rápido y divertido donde debes erradicar los virus e infectar los órganos de tus rivales.",
-        jugadores_min: 2,
-        jugadores_max: 6,
-        activo: true,
-        editorial_id: 4,
-        categoria_id: 3,
-    },
-    {
-        id: 5,
-        nombre: "Codenames (Código Secreto)",
-        stock: 12,
-        precio: 25.00,
-        edad_minima: 14,
-        thumbnail: "https://images.unsplash.com/photo-1632501641765-e568d28b0015?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Dos jefes de espías conocen la identidad secreta de cada agente. Sus compinches sabrán de ellos solo por sus códigos secretos.",
-        jugadores_min: 2,
-        jugadores_max: 8,
-        activo: true,
-        editorial_id: 1,
-        categoria_id: 2,
-    },
-    {
-        id: 6,
-        nombre: "Ticket to Ride (Aventureros al Tren)",
-        stock: 5,
-        precio: 49.99,
-        edad_minima: 8,
-        thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Una aventura en tren a lo largo y ancho de América del Norte donde los jugadores conectan ciudades mediante rutas ferroviarias.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: true,
-        editorial_id: 2,
-        categoria_id: 1,
-    },
-    {
-        id: 7,
-        nombre: "Exploding Kittens",
-        stock: 0,
-        precio: 22.50,
-        edad_minima: 7,
-        thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Una versión gatuna de la ruleta rusa con un gran componente estratégico de cartas.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: false,
-        editorial_id: 5,
-        categoria_id: 3,
-    }
-]
 
 export default function Home({ darkMode }) {
     const [juegos, setJuegos] = useState([])
     const [loading, setLoading] = useState(true)
 
-/*    useEffect(()=> {
-        fetch('https://dummyjson.com/products/category/beauty')
-        .then(res=>res.json())
-        .then((data)=> {
-            console.log(data.products)
-            setProducts(data.products)
-            setLoading(false)
-        })
-    },[])
-*/
 
     useEffect(() => {
-        const fetchJuegosMock = new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(MOCK_JUEGOS)
-            }, 500)
-        })
+    const fetchJuegos = async () => {
+        try {
+            const response = await fetch("https://examen-final-pp1-backend-a3950e7e.fastapicloud.dev/juegos/");
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            
+            // Como usamos fastapi-pagination, la lista viene en data.items:
+            setJuegos(data.items || data); 
+        } catch (error) {
+            console.error("Error al obtener juegos:", error);
+            setJuegos([]); // sigue siendo un array en caso de error
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchJuegosMock.then((data) => {
-            setJuegos(data)
-            setLoading(false)
-        })
-    }, [])
+    fetchJuegos();
+}, []);
 
     if (loading) {
         return (
@@ -173,14 +72,14 @@ export default function Home({ darkMode }) {
                             Ver Catálogo
                         </a>
                         <Link 
-                            to="/juegosDeRol" 
+                            to="/eurogames" 
                             className={`px-8 py-3.5 rounded-xl font-bold border active:scale-95 transition-all duration-200 ${
                                 darkMode 
                                     ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700' 
                                     : 'bg-stone-300/60 hover:bg-stone-300 text-slate-800 border-stone-400/60'
                             }`}
                         >
-                            Juegos de Rol
+                            Eurogames
                         </Link>
                     </div>
                 </div>

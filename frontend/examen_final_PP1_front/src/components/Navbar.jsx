@@ -34,9 +34,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
                 {/* Nav Links */}
                 <ul className="hidden md:flex items-center gap-2">
                     <li><NavLink to="/" className={linkStyle}>Inicio</NavLink></li>
-                    <li><NavLink to="/juegosDeMesa" className={linkStyle}>Juegos de mesa</NavLink></li>
-                    <li><NavLink to="/juegosDeRol" className={linkStyle}>Juegos de rol</NavLink></li>
-                    <li><NavLink to="/accesorios" className={linkStyle}>Accesorios</NavLink></li>
+                    <li><NavLink to="/juegosFamiliares" className={linkStyle}>Juegos Familiares</NavLink></li>
+                    <li><NavLink to="/eurogames" className={linkStyle}>Eurogames</NavLink></li>
+                    <li><NavLink to="/cooperativos" className={linkStyle}>Cooperativos</NavLink></li>
                 </ul>
 
                 {/* Acciones */}

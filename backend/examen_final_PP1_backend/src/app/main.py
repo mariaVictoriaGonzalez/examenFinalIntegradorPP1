@@ -22,9 +22,10 @@ add_pagination(app)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://127.0.0.1:5500"      #HTML
-        "http://localhost:5500"
-        "http://localhost:5173"     #React con Vite - a chequear n° puerto
+        "http://127.0.0.1:5500",      #HTML
+        "http://localhost:5500",
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",    #React con Vite - a chequear n° puerto
         #el entorno de produccion
     ],
     allow_credentials=True,

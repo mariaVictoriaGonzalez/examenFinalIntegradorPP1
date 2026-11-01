@@ -1,135 +1,37 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-const MOCK_JUEGOS = [
-    {
-        id: 1,
-        nombre: "Catan",
-        stock: 15,
-        precio: 45.99,
-        edad_minima: 10,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Un juego de estrategia donde los jugadores intentan ser la fuerza dominante en la isla de Catan construyendo asentamientos, ciudades y caminos.",
-        jugadores_min: 3,
-        jugadores_max: 4,
-        activo: true,
-        editorial_id: 1,
-        categoria_id: 1,
-    },
-    {
-        id: 2,
-        nombre: "Carcassonne",
-        stock: 20,
-        precio: 35.50,
-        edad_minima: 7,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Juego de colocación de fichas donde los jugadores construyen el paisaje alrededor de la fortaleza medieval de Carcassonne.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: true,
-        editorial_id: 2,
-        categoria_id: 1,
-    },
-    {
-        id: 3,
-        nombre: "Dixit",
-        stock: 8,
-        precio: 32.00,
-        edad_minima: 8,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Un juego ilustrado de deducción creativa donde la imaginación te abre las puertas a historias sorprendentes.",
-        jugadores_min: 3,
-        jugadores_max: 6,
-        activo: true,
-        editorial_id: 3,
-        categoria_id: 2,
-    },
-    {
-        id: 4,
-        nombre: "Virus!",
-        stock: 30,
-        precio: 15.00,
-        edad_minima: 8,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Juego de cartas rápido y divertido donde debes erradicar los virus e infectar los órganos de tus rivales.",
-        jugadores_min: 2,
-        jugadores_max: 6,
-        activo: true,
-        editorial_id: 4,
-        categoria_id: 3,
-    },
-    {
-        id: 5,
-        nombre: "Codenames (Código Secreto)",
-        stock: 12,
-        precio: 25.00,
-        edad_minima: 14,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Dos jefes de espías conocen la identidad secreta de cada agente. Sus compinches sabrán de ellos solo por sus códigos secretos.",
-        jugadores_min: 2,
-        jugadores_max: 8,
-        activo: true,
-        editorial_id: 1,
-        categoria_id: 2,
-    },
-    {
-        id: 6,
-        nombre: "Ticket to Ride (Aventureros al Tren)",
-        stock: 5,
-        precio: 49.99,
-        edad_minima: 8,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Una aventura en tren a lo largo y ancho de América del Norte donde los jugadores conectan ciudades mediante rutas ferroviarias.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: true,
-        editorial_id: 2,
-        categoria_id: 1,
-    },
-    {
-        id: 7,
-        nombre: "Exploding Kittens",
-        stock: 0,
-        precio: 22.50,
-        edad_minima: 7,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Una versión gatuna de la ruleta rusa con un gran componente estratégico de cartas.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: false,
-        editorial_id: 5,
-        categoria_id: 3,
-    }
-]
 
-export default function JuegosDeRol({ darkMode }){
+export default function Eurogames({ darkMode }){
     const [juegos, setJuegos] = useState([])
     const [loading, setLoading] = useState(true)
 
-/*    useEffect(()=> {
-        fetch('https://dummyjson.com/products/category/beauty')
-        .then(res=>res.json())
-        .then((data)=> {
-            console.log(data.products)
-            setProducts(data.products)
-            setLoading(false)
-        })
-    },[])
-*/
+useEffect(() => {
+    const fetchAndFilterJuegos = async () => {
+        try {
+            const response = await fetch("https://examen-final-pp1-backend-a3950e7e.fastapicloud.dev/juegos/");
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            const listaJuegos = data.items || data;
 
-    useEffect(() => {
-        // Simulación de respuesta de API con 500ms de retraso
-        const fetchJuegosMock = new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(MOCK_JUEGOS)
-            }, 500)
-        })
+            // Filtramos en JS comparando el ID 7
+            const juegosFamiliares = listaJuegos.filter(
+                (juego) => juego.categoria_id === 1 || juego.id_categoria === 1 || juego.categoria?.id === 1
+            );
 
-        fetchJuegosMock.then((data) => {
-            setJuegos(data)
-            setLoading(false)
-        })
-    }, [])
+            setJuegos(juegosFamiliares);
+        } catch (error) {
+            console.error("Error al cargar juegos:", error);
+            setJuegos([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchAndFilterJuegos();
+}, []);
 
     if (loading) {
         return (
@@ -147,7 +49,7 @@ export default function JuegosDeRol({ darkMode }){
             <section className="max-w-7xl mx-auto px-6 pt-10">
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-300/60 dark:border-zinc-800">
                     <div>
-                        <h1 className="text-3xl font-black tracking-wide">Juegos de Rol</h1>
+                        <h1 className="text-3xl font-black tracking-wide">Eurogames</h1>
                         <p className={`text-sm mt-1 ${darkMode ? 'text-zinc-400' : 'text-slate-600'}`}>
                             Manuales, sistemas de juego y aventuras para tus partidas
                         </p>

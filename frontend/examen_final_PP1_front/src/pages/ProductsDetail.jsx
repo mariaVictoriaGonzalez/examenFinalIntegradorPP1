@@ -3,155 +3,55 @@ import { Outlet, useParams, Link, NavLink } from "react-router-dom"
 import { FavoritosContext } from "../context/FavoritosContext"
 import { CarritoContext } from "../context/CarritoContext"
 
-// Array de datos falsos de ejemplo para la simulación
-const MOCK_JUEGOS = [
-    {
-        id: 1,
-        nombre: "Catan",
-        stock: 15,
-        precio: 45.99,
-        edad_minima: 10,
-        thumbnail: "https://acdn-us.mitiendanube.com/stores/907/020/products/catan02-bfbfc6412744ef319317823089500675-1024-1024.webp",
-        descripcion: "Un juego de estrategia donde los jugadores intentan ser la fuerza dominante en la isla de Catan construyendo asentamientos, ciudades y caminos.",
-        jugadores_min: 3,
-        jugadores_max: 4,
-        activo: true,
-        editorial_id: 1,
-        categoria_id: 1,
-    },
-    {
-        id: 2,
-        nombre: "Carcassonne",
-        stock: 20,
-        precio: 35.50,
-        edad_minima: 7,
-        thumbnail: "https://images.unsplash.com/photo-1606503153255-59d8b8b82176?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Juego de colocación de fichas donde los jugadores construyen el paisaje alrededor de la fortaleza medieval de Carcassonne.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: true,
-        editorial_id: 2,
-        categoria_id: 1,
-    },
-    {
-        id: 3,
-        nombre: "Dixit",
-        stock: 8,
-        precio: 32.00,
-        edad_minima: 8,
-        thumbnail: "https://images.unsplash.com/photo-1563941433-b6a094653ed2?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Un juego ilustrado de deducción creativa donde la imaginación te abre las puertas a historias sorprendentes.",
-        jugadores_min: 3,
-        jugadores_max: 6,
-        activo: true,
-        editorial_id: 3,
-        categoria_id: 2,
-    },
-    {
-        id: 4,
-        nombre: "Virus!",
-        stock: 30,
-        precio: 15.00,
-        edad_minima: 8,
-        thumbnail: "https://images.unsplash.com/photo-1541199249251-f713e6145474?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Juego de cartas rápido y divertido donde debes erradicar los virus e infectar los órganos de tus rivales.",
-        jugadores_min: 2,
-        jugadores_max: 6,
-        activo: true,
-        editorial_id: 4,
-        categoria_id: 3,
-    },
-    {
-        id: 5,
-        nombre: "Codenames (Código Secreto)",
-        stock: 12,
-        precio: 25.00,
-        edad_minima: 14,
-        thumbnail: "https://images.unsplash.com/photo-1632501641765-e568d28b0015?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Dos jefes de espías conocen la identidad secreta de cada agente. Sus compinches sabrán de ellos solo por sus códigos secretos.",
-        jugadores_min: 2,
-        jugadores_max: 8,
-        activo: true,
-        editorial_id: 1,
-        categoria_id: 2,
-    },
-    {
-        id: 6,
-        nombre: "Ticket to Ride (Aventureros al Tren)",
-        stock: 5,
-        precio: 49.99,
-        edad_minima: 8,
-        thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-        descripcion: "Una aventura en tren a lo largo y ancho de América del Norte donde los jugadores conectan ciudades mediante rutas ferroviarias.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: true,
-        editorial_id: 2,
-        categoria_id: 1,
-    },
-    {
-        id: 7,
-        nombre: "Exploding Kittens",
-        stock: 0,
-        precio: 22.50,
-        edad_minima: 7,
-        thumbnail: null,
-        descripcion: "Una versión gatuna de la ruleta rusa con un gran componente estratégico de cartas.",
-        jugadores_min: 2,
-        jugadores_max: 5,
-        activo: false,
-        editorial_id: 5,
-        categoria_id: 3,
-    }
-]
 
 export default function ProductDetail({ darkMode }) {
     const { id } = useParams()
-    const [product, setProduct] = useState(null)
+    const [juego, setJuego] = useState(null)
     const [loading, setLoading] = useState(true)
     const { agregarAlCarrito } = useContext(CarritoContext)
-
-    // Contexto de Favoritos (si tu contexto expone toggleFavorito o similares, puedes invocarlo)
     const { favoritos, setFavoritos } = useContext(FavoritosContext) || {}
 
-    /* useEffect(() => {
-        fetch(`https://dummyjson.com/products/${id}`)
-            .then(res => res.json())
-            .then((data) => {
-                setProduct(data)
-                setLoading(false)
-            });
-    }, [id]) */
-
-    useEffect(() => {
-        const fetchJuegoMock = new Promise((resolve) => {
-            setTimeout(() => {
-                const juegoEncontrado = MOCK_JUEGOS.find(juego => juego.id === Number(id))
-                resolve(juegoEncontrado)
-            }, 500)
-        })
-
-        fetchJuegoMock.then((data) => {
-            setProduct(data)
-            setLoading(false)
-        })
-    }, [id])
+useEffect(() => {
+        const fetchJuegoDetalle = async () => {
+            try {
+                // Hacemos la petición al endpoint individual de tu FastAPI backend
+                const response = await fetch(`https://examen-final-pp1-backend-a3950e7e.fastapicloud.dev/juegos/${id}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Los endpoints individuales son  sin paginación,
+                // por lo que 'data' es directamente el objeto del juego
+                setJuego(data);
+            } catch (error) {
+                console.error("Error al obtener la descripción del juego:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        if (id) {
+            fetchJuegoDetalle();
+        }
+    }, [id]);
 
     // Verificar si el producto ya está en favoritos
-    const esFavorito = favoritos?.some(item => item.id === product?.id)
+    const esFavorito = favoritos?.some(item => item.id === juego?.id)
 
     const handleToggleFavorito = () => {
         if (!setFavoritos) return
         if (esFavorito) {
-            setFavoritos(favoritos.filter(item => item.id !== product.id))
+            setFavoritos(favoritos.filter(item => item.id !== juego.id))
         } else {
-            setFavoritos([...favoritos, product])
+            setFavoritos([...favoritos, juego])
         }
     }
 
     const handleAgregarCarrito = () => {
-        if (product && product.stock > 0) {
-            agregarAlCarrito(product, 1)
+        if (juego && juego.stock > 0) {
+            agregarAlCarrito(juego, 1)
         }   
     }
 
@@ -168,7 +68,7 @@ export default function ProductDetail({ darkMode }) {
         )
     }
 
-    if (!product) {
+    if (!juego) {
         return (
             <div className="flex-1 flex flex-col items-center justify-center py-20 px-4">
                 <h1 className="text-3xl font-black text-red-500 mb-4">Juego no encontrado</h1>
@@ -191,7 +91,7 @@ export default function ProductDetail({ darkMode }) {
                     ← Volver a Inicio
                 </Link>
 
-                {/* TARJETA PRINCIPAL DEL PRODUCTO */}
+                {/* TARJETA PRINCIPAL DEL juegoO */}
                 <div className={`p-6 md:p-8 rounded-2xl border flex flex-col md:flex-row gap-8 items-center transition-all ${
                     darkMode 
                         ? 'bg-zinc-900/90 border-zinc-800 shadow-xl shadow-black/40 text-zinc-100' 
@@ -199,12 +99,12 @@ export default function ProductDetail({ darkMode }) {
                 }`}>
                     <div className="relative w-full md:w-64 h-64 shrink-0 rounded-xl overflow-hidden bg-stone-300/50 dark:bg-zinc-950 border border-stone-300 dark:border-zinc-800">
                         <img 
-                            src={product.thumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80'} 
-                            alt={product.nombre} 
+                            src={juego.thumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80'} 
+                            alt={juego.nombre} 
                             className="w-full h-full object-cover" 
                         />
                         <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-bold backdrop-blur-md ${
-                            product.stock > 0 
+                            juego.stock > 0 
                                 ? darkMode
                                     ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/30'
                                     : 'bg-emerald-100/90 text-emerald-800 border border-emerald-300'
@@ -212,21 +112,21 @@ export default function ProductDetail({ darkMode }) {
                                     ? 'bg-red-950/80 text-red-400 border border-red-500/30'
                                     : 'bg-red-100/90 text-red-800 border border-red-300'
                         }`}>
-                            {product.stock > 0 ? `Stock: ${product.stock}` : 'Agotado'}
+                            {juego.stock > 0 ? `Stock: ${juego.stock}` : 'Agotado'}
                         </span>
                     </div>
 
                     <div className="flex-1 flex flex-col justify-between w-full">
                         <div>
-                            <h1 className="text-3xl font-black tracking-tight">{product.nombre}</h1>
+                            <h1 className="text-3xl font-black tracking-tight">{juego.nombre}</h1>
                             <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-2">
-                                ${product.precio}
+                                ${juego.precio}
                             </p>
 
                             <div className={`mt-4 space-y-1.5 text-sm font-medium ${darkMode ? 'text-zinc-400' : 'text-slate-600'}`}>
-                                <p> Categoría ID: <span className="font-semibold text-zinc-200 dark:text-zinc-300">{product.categoria_id}</span></p>
-                                <p> Jugadores: <span className="font-semibold text-zinc-200 dark:text-zinc-300">{product.jugadores_min} - {product.jugadores_max}</span></p>
-                                <p> Edad mínima: <span className="font-semibold text-zinc-200 dark:text-zinc-300">+{product.edad_minima} años</span></p>
+                                <p> Categoría ID: <span className="font-semibold text-zinc-200 dark:text-zinc-300">{juego.categoria_id}</span></p>
+                                <p> Jugadores: <span className="font-semibold text-zinc-200 dark:text-zinc-300">{juego.jugadores_min} - {juego.jugadores_max}</span></p>
+                                <p> Edad mínima: <span className="font-semibold text-zinc-200 dark:text-zinc-300">+{juego.edad_minima} años</span></p>
                             </div>
                         </div>
 
@@ -249,15 +149,15 @@ export default function ProductDetail({ darkMode }) {
 
                             <button
                                 onClick={handleAgregarCarrito}
-                                disabled={product.stock === 0}
+                                disabled={juego.stock === 0}
                                 className={`flex-1 px-6 py-3 rounded-xl font-bold text-sm shadow-md transition-all duration-200 flex items-center justify-center gap-2 ${
-                                    product.stock > 0
+                                    juego.stock > 0
                                         ? 'bg-linear-to-r from-teal-600 to-emerald-600 dark:from-teal-500 dark:to-emerald-500 hover:opacity-90 active:scale-95 text-white dark:text-slate-950'
                                         : 'bg-zinc-700 text-zinc-400 cursor-not-allowed opacity-60'
                                 }`}
                             >
                                 <span>🛒</span>
-                                <span>{product.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock'}</span>
+                                <span>{juego.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock'}</span>
                             </button>
                         </div>
                     </div>
@@ -293,7 +193,7 @@ export default function ProductDetail({ darkMode }) {
                     </NavLink>
                 </div>
 
-                <Outlet context={product} />
+                <Outlet context={juego} />
             </div>
         </main>
     )
