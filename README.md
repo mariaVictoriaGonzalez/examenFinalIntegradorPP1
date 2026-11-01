@@ -5,7 +5,7 @@
 * Lemo, Facundo
 
 ## Integrantes
-* Borsarello, Francisca
+* Borsarelli, Francisca
 * Carrizo Larrarte, Emmanuel
 * Gonzalez, Maria Victoria
 * Zoppolo, Dina
