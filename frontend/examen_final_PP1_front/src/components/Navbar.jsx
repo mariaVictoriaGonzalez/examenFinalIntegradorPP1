@@ -37,6 +37,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
                     <li><NavLink to="/juegosFamiliares" className={linkStyle}>Juegos Familiares</NavLink></li>
                     <li><NavLink to="/eurogames" className={linkStyle}>Eurogames</NavLink></li>
                     <li><NavLink to="/cooperativos" className={linkStyle}>Cooperativos</NavLink></li>
+                    <li><NavLink to="/formulario" className={linkStyle}>Formulario</NavLink></li>
+
                 </ul>
 
                 {/* Acciones */}
