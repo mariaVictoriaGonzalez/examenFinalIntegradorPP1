@@ -4,9 +4,9 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlmodel import Session, select
 from typing import Annotated, TypeAlias
 
-from database import get_db
-from models.anidados import JuegoNested
-from models.juegos_model import Juego, JuegoBase, JuegoPublic
+from app.database import get_db
+from app.models.anidados import JuegoNested
+from app.models.juegos_model import Juego, JuegoBase, JuegoPublic
 
 juegos_routers = APIRouter()
 

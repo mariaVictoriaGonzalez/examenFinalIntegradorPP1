@@ -3,9 +3,9 @@ from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlmodel import paginate
 from typing import Annotated, TypeAlias
 from sqlmodel import Session, select
-from database import get_db
-from models.anidados import CategoriaNested
-from models.categorias_model import Categoria, CategoriaBase, CategoriaPublic
+from app.database import get_db
+from app.models.anidados import CategoriaNested
+from app.models.categorias_model import Categoria, CategoriaBase, CategoriaPublic
 
 categoria_routers = APIRouter()
 

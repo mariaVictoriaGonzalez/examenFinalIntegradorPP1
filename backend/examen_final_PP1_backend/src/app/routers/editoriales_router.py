@@ -3,9 +3,9 @@ from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlmodel import paginate
 from typing import Annotated, TypeAlias
 from sqlmodel import Session, select
-from database import get_db
-from models.anidados import EditorialNested
-from models.editoriales_model import Editorial, EditorialBase, EditorialPublic
+from app.database import get_db
+from app.models.anidados import EditorialNested
+from app.models.editoriales_model import Editorial, EditorialBase, EditorialPublic
 
 editorial_routers = APIRouter()
 

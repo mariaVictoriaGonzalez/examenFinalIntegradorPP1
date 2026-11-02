@@ -1,20 +1,43 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import Navbar from './components/Navbar'
+import Home from './pages/Home'
+import Footer from './components/Footer'
+import JuegosFamiliares from './pages/juegosFamiliares'
+import Eurogames from './pages/euroGames'
+import Cooperativos from './pages/Cooperativos'
+import Favoritos from './pages/favoritos'
+import { Routes, Route } from 'react-router-dom'
+import ProductDetail from "./pages/ProductsDetail"
+import ProductsDescription from "./components/ProductDescription"
+import ProductsEditorial from "./components/ProductEditorial"
+import Carrito from './pages/carrito'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [darkMode, setDarkMode] = useState(true)
 
   return (
-    <>
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-white">
-        ¡Tailwind está funcionando!
-      </h1>
+    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${
+      darkMode ? 'bg-gray-900 text-zinc-100' : 'bg-stone-200/70 text-slate-800'
+    }`}>
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+      
+      <Routes>
+        <Route path='/' element={<Home darkMode={darkMode} />} />
+        <Route path='/juegosFamiliares' element={<JuegosFamiliares darkMode={darkMode}  />} />
+        <Route path='/eurogames' element={<Eurogames darkMode={darkMode}  />} />
+        <Route path='/cooperativos' element={<Cooperativos darkMode={darkMode}  />} />
+        <Route path='/favoritos' element={<Favoritos darkMode={darkMode}  />} />
+        <Route path='/carrito' element={<Carrito darkMode={darkMode}  />} />
+        <Route path='/juegos/:id' element={<ProductDetail darkMode={darkMode}/>}>
+          <Route index element={<ProductsDescription darkMode={darkMode}/>} />
+
+              <Route path='editorial' element={<ProductsEditorial darkMode={darkMode}/>} />
+              
+        </Route>
+      </Routes>
+
+      <Footer darkMode={darkMode} />
     </div>
-    </>
   )
 }
 

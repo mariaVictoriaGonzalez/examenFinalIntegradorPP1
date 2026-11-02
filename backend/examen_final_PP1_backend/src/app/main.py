@@ -1,18 +1,23 @@
 from contextlib import asynccontextmanager
 from pathlib import Path
-
+import sys
 from alembic.config import Config
+from alembic import command
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 
-from alembic import command
-from routers.juegos_router import juegos_routers
-from routers.categorias_router import categoria_routers
-from routers.editoriales_router import editorial_routers
+from app.routers.juegos_router import juegos_routers
+from app.routers.categorias_router import categoria_routers
+from app.routers.editoriales_router import editorial_routers
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+if str(BASE_DIR / "src") not in sys.path:
+    sys.path.insert(0, str(BASE_DIR / "src"))
 
 def run_migrations():
     ini_path = BASE_DIR / "alembic.ini"
