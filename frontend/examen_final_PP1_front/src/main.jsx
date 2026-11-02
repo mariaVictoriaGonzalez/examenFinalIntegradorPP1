@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { FavoritosProvider } from './context/FavoritosContext' 
 import { CarritoProvider } from './context/CarritoContext.jsx'
 import App from './App.jsx'
+import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

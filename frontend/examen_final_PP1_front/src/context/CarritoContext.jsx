@@ -3,13 +3,12 @@ import { createContext, useState, useEffect } from "react"
 export const CarritoContext = createContext()
 
 export function CarritoProvider({ children }) {
-    // Inicializar estado guardado en localStorage
     const [carrito, setCarrito] = useState(() => {
         const saved = localStorage.getItem("carrito_mazmorra")
         return saved ? JSON.parse(saved) : []
     })
 
-    // Persistir cambios en localStorage
+    // agregar cambios al localStorage
     useEffect(() => {
         localStorage.setItem("carrito_mazmorra", JSON.stringify(carrito))
     }, [carrito])
