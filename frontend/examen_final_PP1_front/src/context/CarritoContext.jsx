@@ -8,12 +8,10 @@ export function CarritoProvider({ children }) {
         return saved ? JSON.parse(saved) : []
     })
 
-    // agregar cambios al localStorage
     useEffect(() => {
         localStorage.setItem("carrito_mazmorra", JSON.stringify(carrito))
     }, [carrito])
 
-    // Agregar producto al carrito (si ya existe, incrementa la cantidad)
     const agregarAlCarrito = (producto, cantidad = 1) => {
         setCarrito((prev) => {
             const existe = prev.find((item) => item.id === producto.id)
@@ -28,7 +26,6 @@ export function CarritoProvider({ children }) {
         })
     }
 
-    // Incrementar o decrementar cantidad de un ítem
     const actualizarCantidad = (id, cambio) => {
         setCarrito((prev) =>
             prev
@@ -43,15 +40,12 @@ export function CarritoProvider({ children }) {
         )
     }
 
-    // Eliminar producto por ID
     const eliminarDelCarrito = (id) => {
         setCarrito((prev) => prev.filter((item) => item.id !== id))
     }
 
-    // Vaciar todo el carrito
     const vaciarCarrito = () => setCarrito([])
 
-    // Totales calculados dinámicamente
     const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0)
     const totalPrecio = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
 
