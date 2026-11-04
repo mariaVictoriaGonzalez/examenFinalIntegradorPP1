@@ -44,11 +44,11 @@ El proyecto está dividido en dos partes principales: la carpeta de `backend` y 
 3. **Levantar el servidor de desarrollo:**
    Si te encuentras dentro de la carpeta `backend/examen_final_PP1_backend`, ejecuta:
    ```bash
-   uv run fastapi dev src/main.py
+   uv run fastapi dev src/app/main.py
    ```
    Si te encuentras en la raíz del proyecto (`EFI PP1`), puedes ejecutar directamente:
    ```bash
-   uv run fastapi dev backend/examen_final_PP1_backend/src/main.py
+   uv run fastapi dev backend/examen_final_PP1_backend/src/app/main.py
    ```
 
 4. **Acceso:**
