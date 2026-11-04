@@ -24,6 +24,13 @@ La aplicación consume una **API REST propia** diseñada para gestionar los recu
 
 ---
 
+## 🗒️ Tablero Kanban
+
+Utilizamos el Tablero Kanban de Trello para facilitar la organización y actividades que realiza cada miembro del equipo:
+
+<img width="1424" height="810" alt="image" src="https://github.com/user-attachments/assets/6b838a54-be87-49cd-a6bc-24ae9bac0884" />
+
+
 ## ⚙️ Pasos para ejecutar la aplicación de forma local
 
 El proyecto está dividido en dos partes principales: la carpeta de `backend` y la carpeta de `frontend`. Sigue las siguientes instrucciones para levantar ambos entornos:
