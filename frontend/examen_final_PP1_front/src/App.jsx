@@ -12,7 +12,6 @@ import ProductsDescription from "./components/ProductDescription"
 import ProductsEditorial from "./components/ProductEditorial"
 import Carrito from './pages/carrito'
 import Formulario from './pages/formulario'
-import Favoritos from './pages/favoritos'
 
 function App() {
   const [darkMode, setDarkMode] = useState(true)
